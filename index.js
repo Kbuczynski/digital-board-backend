@@ -15,7 +15,7 @@ const wsServer = new webSocketServer({
 const clients = {};
 let gates = '[]';
 
-const broadcast = (clients, message, currentClient) => {
+const broadcast = (clients, message) => {
     Object.values(clients).map((client) => {
         client.sendUTF(message.utf8Data);
     })
@@ -36,14 +36,12 @@ wsServer.on('request', (request) => {
 
     console.log('connected: ' + userID + ' in ' + Object.getOwnPropertyNames(clients))
 
-    connection.sendUTF(gates);
-
     connection.on('message', (message) => {
         if (message.type === 'utf8') {
             if (gates !== message) {
                 gates = message;
                 console.log('Received Message: ' + message.utf8Data);
-                broadcast(clients, message, userID);
+                broadcast(clients, message);
             }
         }
     })
