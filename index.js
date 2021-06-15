@@ -16,9 +16,16 @@ const clients = {};
 let gates = '[]';
 
 const broadcast = (clients, message, currentClient) => {
-    Object.values(clients).map((client) => {
-        client.sendUTF(message.utf8Data);
-    })
+    console.log(Object.keys(clients))
+
+    // Object.values(clients).map((client) => {
+    //     client.sendUTF(message.utf8Data);
+    // })
+
+    for(const key of Object.keys(clients)){
+        if(key === currentClient) return;
+        clients[key].sendUTF(message.utf8Data)
+    }
 }
 
 const getUniqueID = () => {
