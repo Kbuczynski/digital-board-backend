@@ -40,7 +40,7 @@ const getUniqueID = () => {
 };
 
 wsServer.on('request', (request) => {
-    const userID = getUniqueID();
+    const userID = request.origin;//getUniqueID();
     console.log((new Date()) + ' Received a new connection from origin ' + request.origin + '.');
 
     const connection = request.accept(null, request.origin);
