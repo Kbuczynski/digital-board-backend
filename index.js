@@ -16,22 +16,9 @@ const clients = {};
 let gates = '[]';
 
 const broadcast = (clients, message, currentClient) => {
-    console.log(Object.keys(clients))
-
-    for(const key of Object.keys(clients)){
-        if(key === currentClient) return;
-        clients[key].sendUTF(message.utf8Data)
-    }
-
-    // if (Object.keys(clients) === currentClient)
-    // for (let i = 0; i < clients.length; i++) {
-    //     console.log(clients[i])
-    //     if (clients[currentClient]) return;
-    //
-    //
-    //
-    //     clients[i].sendUTF(message.utf8Data);
-    // }
+    Object.values(clients).map((client) => {
+        client.sendUTF(message.utf8Data);
+    })
 }
 
 const getUniqueID = () => {
@@ -40,7 +27,7 @@ const getUniqueID = () => {
 };
 
 wsServer.on('request', (request) => {
-    const userID = request.origin;//getUniqueID();
+    const userID = getUniqueID();
     console.log((new Date()) + ' Received a new connection from origin ' + request.origin + '.');
 
     const connection = request.accept(null, request.origin);
